@@ -43,6 +43,10 @@ function handleMgCommand(aSplit, aPlayer)
 			aPlayer:SendMessageFailure("Invalid CellSize specification, expected a number")
 			return true
 		end
+		if (cellSize < 2) then
+			aPlayer:SendMessageFailure("Invalid CellSize specification, must be at least 2")
+			return true
+		end
 	end
 	
 	-- Check the ExtraPassagesPercent:
@@ -51,6 +55,14 @@ function handleMgCommand(aSplit, aPlayer)
 		extraPassagesPercent = tonumber(aSplit[4])
 		if not(extraPassagesPercent) then
 			aPlayer:SendMessageFailure("Invalid ExtraPassagesPercent specification, expected a number")
+			return true
+		end
+		if (extraPassagesPercent < 0) then
+			aPlayer:SendMessageFailure("Invalid ExtraPassagesPercent specification, must not be negative")
+			return true
+		end
+		if (extraPassagesPercent > 100) then
+			aPlayer:SendMessageFailure("Invalid ExtraPassagesPercent specification, must not be more than 100")
 			return true
 		end
 	end
@@ -88,15 +100,20 @@ function handleMgConsoleCommand(aSplit)
 	end
 	
 	-- Read the coords:
-	local minX = tonumber(aSplit[3])
-	local minY = tonumber(aSplit[4])
-	local minZ = tonumber(aSplit[5])
-	local maxX = tonumber(aSplit[6])
-	local maxY = tonumber(aSplit[7])
-	local maxZ = tonumber(aSplit[8])
+	local readCoord = function(aParamText, aParamName)
+		local res = tonumber(aParamText)
+		if not(res) then
+			LOG("Invalid " .. aParamName .. " specification, not a number: " .. tostring(aParamText or "<missing>"))
+		end
+		return res
+	end
+	local minX = readCoord(aSplit[3], "minX")
+	local minY = readCoord(aSplit[4], "minY")
+	local minZ = readCoord(aSplit[5], "minZ")
+	local maxX = readCoord(aSplit[6], "maxX")
+	local maxY = readCoord(aSplit[7], "maxY")
+	local maxZ = readCoord(aSplit[8], "maxZ")
 	if (not(minX) or not(minY) or not(minZ) or not(maxX) or not(maxY) or not(maxZ)) then
-		-- TODO: Better error reporting
-		LOG("Wrong coords")
 		return true
 	end
 	
@@ -119,6 +136,10 @@ function handleMgConsoleCommand(aSplit)
 			LOG("Invalid CellSize specification, expected a number")
 			return true
 		end
+		if (cellSize < 2) then
+			LOG("Invalid CellSize specification, must be at least 2")
+			return true
+		end
 	end
 	
 	-- Check the ExtraPassagesPercent:
@@ -127,6 +148,14 @@ function handleMgConsoleCommand(aSplit)
 		extraPassagesPercent = tonumber(aSplit[11])
 		if not(extraPassagesPercent) then
 			LOG("Invalid ExtraPassagesPercent specification, expected a number")
+			return true
+		end
+		if (extraPassagesPercent < 0) then
+			LOG("Invalid ExtraPassagesPercent specification, must not be negative")
+			return true
+		end
+		if (extraPassagesPercent > 100) then
+			LOG("Invalid ExtraPassagesPercent specification, must not be more than 100")
 			return true
 		end
 	end
