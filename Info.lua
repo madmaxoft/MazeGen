@@ -17,6 +17,18 @@ Requires WorldEdit to be installed. To generate a maze, select an area using Wor
 The plugin can also be used through the server console, specifying the world and coords as parameters, rather
 than reading them from a player's WorldEdit selection.
 ]],
+	AdditionalInfo =
+	{
+		{
+			Title = "Technical",
+			Contents =
+[[
+Internally, the plugin uses the Recursive backtracker algorithm to generate the maze. Due to Lua having a
+limited stack depth of 100 levels only, instead of using the call-stack, the plugin keeps its own stack
+of cells to backtrack to.
+]],
+		},
+	},
 	Commands =
 	{
 		["/mg"] =

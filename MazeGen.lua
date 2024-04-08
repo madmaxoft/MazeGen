@@ -136,14 +136,14 @@ end
 
 
 function MazeGen:createMazeInArea()
-	local numInQueue = 1
-	local queue = {{x = 1, z = 1}}
+	local numOnStack = 1
+	local stack = {{x = 1, z = 1}}
 	self.mCells[1][1] = true
 	local available = {}
 	local numAvailable = 0
-	while (numInQueue > 0) do
-		local current = queue[numInQueue]
-		numInQueue = numInQueue - 1
+	while (numOnStack > 0) do
+		local current = stack[numOnStack]
+		numOnStack = numOnStack - 1
 		
 		-- Collect all available neighbors:
 		numAvailable = 0
@@ -165,11 +165,11 @@ function MazeGen:createMazeInArea()
 			self:carveWall(current.x, current.z, dir.x, dir.z)
 			self.mCells[newX][newZ] = true
 			if (numAvailable > 1) then
-				-- There are multiple directions available, keep the current cell in the queue as well:
-				numInQueue = numInQueue + 1
+				-- There are multiple directions available, keep the current cell in the stack as well:
+				numOnStack = numOnStack + 1
 			end
-			numInQueue = numInQueue + 1
-			queue[numInQueue] = {x = newX, z = newZ}
+			numOnStack = numOnStack + 1
+			stack[numOnStack] = {x = newX, z = newZ}
 		end
 	end
 end
